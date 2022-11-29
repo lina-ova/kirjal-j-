@@ -1,0 +1,70 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Kirjaläjä
+{% endblock %}
+
+{% block body %}
+
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul>
+                {% for message in messages %}
+                    {{ message }}
+                {% endfor %}
+            </ul>
+            
+        {% endif %}
+    {% endwith %}
+
+    {% if book %}
+        <h2>Kirjan nimi:</h2> <h3> {{ book.name }}</h3> 
+
+        <br>
+
+        <h4><b>Kirjoittaja: </b> {{ book.author }} </h4> 
+        <h4><b>stars: </b> {{ book.stars }} </h4> 
+        <h4><b>Kuvaus: </b> {{ book.description }} </h4> 
+        {% if session.user_id %}
+        <form action="/book/{{ book.id }}" method="POST">
+          <div class="stars">
+            <input id="stars1" type="radio" name="stars" value=1>
+            <label for="stars1">1</label>
+            <input id="stars2" type="radio" name="stars" value=2>
+            <label for="stars2">2</label>
+            <input id="stars3" type="radio" name="stars" value=3>
+            <label for="stars3">3</label>
+            <input id="stars4" type="radio" name="stars" value=4>
+            <label for="stars4">4</label>
+            <input id="stars5" type="radio" name="stars" value=5>
+            <label for="stars5">5</label>
+          </div>
+          <textarea id="review" name="review" rows="4" cols="50" ></textarea>
+          <button>Lähetä</button>
+        </form>
+        {% else %}
+            Kirjaudu tai registeröidy ensin
+        {% endif %}
+        {% if reviews %}
+            <ul>
+                {% for review in reviews %}
+                    <li>
+                        <b>{{ review.username }}</b>
+                        <b>{{ review.review }}</b>
+                    </li>
+                {% endfor %}
+            </ul>
+
+
+            {% else %}
+            <ul>
+                Ei vielä ole arvosteluja
+            </ul>
+        {% endif %}
+<!-- Add icon library -->
+
+
+
+
+    {% endif %}
+{% endblock %}

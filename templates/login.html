@@ -1,0 +1,35 @@
+{% extends "layout.html" %}
+
+{% block title %}Kirjautuminen{% endblock %}
+
+{% block body %}
+{% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul>
+        {% for message in messages %}
+          {{ message }}
+        {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+<div>
+    Kirjaudu sisään
+    <form action='/login' method="POST">
+
+        <div>
+            <label for="username">Käyttäjätunnus</label>
+            <input type="text" name="username" id="username" />
+          </div>
+
+          <div>
+            <label for="password">Salasana</label>
+            <input type="password" name="password" id="password" />
+          </div>
+
+        <input type="submit" value="Lähetä"/>
+
+    </form>
+</div>
+Jos sinulla ei ole tunnusta, voit luoda uuden tunnuksen <a href="/register">tästä</a>
+
+{% endblock %}

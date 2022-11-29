@@ -1,0 +1,50 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Lisää uuden kirjaaan
+{% endblock %}
+
+{% block body %}
+{% if session.admin == 1 %}
+<h1>Lisää uuden kirjan</h1>
+<form action="/add_book" method="POST">
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul>
+        {% for message in messages %}
+          {{ message }}
+        {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+    <div>
+        <label for="name">Kirjan nimi</label>
+        <input type="text" name="name" id="name" /> *
+    </div>
+    
+    <div>
+        <label for="author">Kirjoittaja</label>
+        <input type="text" name="author" id="author" /> *
+    </div>
+
+    <div>
+        <label for="description">Kuvaus</label>
+        <input type="text" name="description" id="description" /> *
+    </div>
+  
+    <div>
+        <label for="genre">Genre</label>
+        <input type="text" name="genre" id="genre" /> *
+    </div>
+  
+
+  
+    <button>
+        Lisää kirjan
+    </button>
+</form>
+<br>
+kaikki rivit ovat pakollisia *
+<br>
+{% endif %}
+{% endblock %}

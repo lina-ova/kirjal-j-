@@ -1,0 +1,46 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Rekisteröityminen
+{% endblock %}
+
+{% block body %}
+
+<h1>Rekisteröityminen</h1>
+<form action="/register" method="POST">
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul>
+        {% for message in messages %}
+          {{ message }}
+        {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+
+    <div>
+        <label for="username">Käyttäjätunnus</label>
+        <input type="text" name="username" id="username" />
+      </div>
+
+    <div>
+      <label for="password">Salasana</label>
+      <input type="password" name="password" id="password" />
+    </div>
+
+    <div>
+    <label for="password_confirmation">Salasanan vahvistaminen</label>
+    <input type="password" name="password_confirmation" id="password_confirmation" />
+    </div>
+
+    <button>
+      Rekisteröidy
+    </button>
+
+    <div>
+      <a href="/login">Kirjaudu sisään</a>
+    </div>
+
+  </form>
+
+{% endblock %}

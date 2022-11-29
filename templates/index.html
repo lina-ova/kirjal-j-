@@ -1,0 +1,59 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Kirjaläjä
+{% endblock %}
+
+{% block body %}
+
+
+<nav class="navbar navbar-expand-lg navbar-light">
+    <ul class="navbar-nav">
+      {% if session.admin == 1 %}
+      <li class="nav-item">
+        <a class="nav-link" href="/add_book">Lisää uuden kirjan</a>
+      </li>
+      {% endif %}
+    </ul>
+</nav>
+
+<h2>Lisätyt kirjat</h2>
+
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+  <ul>
+  {% for message in messages %}
+    {{ message }}
+  {% endfor %}
+  </ul>
+{% endif %}
+{% endwith %}
+
+<form action="/search" method="GET">
+  <input type="text" name="search" id="search">
+  <input type="submit" value="Etsi">
+</form>
+
+<br>
+
+{% if books %}
+<form action="/" method="POST">
+  <ul>
+      {% for book in books %}
+        <li>
+          <a href="/book/{{ book.id }}"> {{ book.name }}</a>,{{ book.author }}, {{ book.description }}
+          {% if session.admin == 1 %}
+          <button type="submit" name="delete" value="{{ book.id }}">Poista</button>
+          {% endif %}
+        </li>
+      {% endfor %}
+  </ul>
+</form>
+{% else %}
+<ul>
+    Ei vielä ole kirjoja
+</ul>
+{% endif %}
+
+
+{% endblock %}
