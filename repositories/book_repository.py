@@ -28,7 +28,7 @@ class BookRepository:
         """Palauttaa kirjojen nimeistä haetut tulokset"""
 
         cursor = self.connection.session
-        print(query)
+
         try:
             sql = """SELECT id, name, author, description, genre, stars, visible FROM books WHERE name LIKE :query AND visible=1"""
             rows = cursor.execute(sql, {"query":"%"+query+"%"}).fetchall()

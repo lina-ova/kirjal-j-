@@ -9,8 +9,6 @@ class ReviewRepository:
     def __init__(self, connection):
         self.connection = connection
     
-    
-
     def add_review(self, user_id, username, book_id, stars, review):
         cursor = self.connection.session
         sql = "INSERT INTO reviews (user_id, username, book_id, stars,review, time, visible) VALUES (:user_id, :username, :book_id, :stars, :review, NOW(), 1)"
@@ -34,8 +32,8 @@ class ReviewRepository:
 
         cursor = self.connection.session
         try:
-            sql = """UPDATE reviews SET visible=:visible WHERE id=:review_id"""
-            cursor.execute(sql, {"visible":0, "review_id":review_id})
+            sql = """UPDATE reviews SET visible=0 WHERE id=:review_id"""
+            cursor.execute(sql, {"review_id":review_id})
             cursor.commit()
         except:
             return False

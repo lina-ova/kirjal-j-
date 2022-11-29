@@ -26,7 +26,7 @@
         <h4><b>stars: </b> {{ book.stars }} </h4> 
         <h4><b>Kuvaus: </b> {{ book.description }} </h4> 
         {% if session.user_id %}
-        <form action="/book/{{ book.id }}" method="POST">
+        <form action="/book/{{ book.id }}" method="POST" name="review">
           <div class="stars">
             <input id="stars1" type="radio" name="stars" value=1>
             <label for="stars1">1</label>
@@ -36,24 +36,30 @@
             <label for="stars3">3</label>
             <input id="stars4" type="radio" name="stars" value=4>
             <label for="stars4">4</label>
-            <input id="stars5" type="radio" name="stars" value=5>
+            <input id="stars5" type="radio" name="stars" value=5 checked>
             <label for="stars5">5</label>
           </div>
           <textarea id="review" name="review" rows="4" cols="50" ></textarea>
-          <button>Lähetä</button>
+          <button type="submit">Lähetä</button>
         </form>
         {% else %}
             Kirjaudu tai registeröidy ensin
         {% endif %}
         {% if reviews %}
-            <ul>
-                {% for review in reviews %}
-                    <li>
-                        <b>{{ review.username }}</b>
-                        <b>{{ review.review }}</b>
-                    </li>
-                {% endfor %}
-            </ul>
+        <form action="/book/{{ book.id }}/review" method="POST" name="delete">
+          <ul>
+            {% for review in reviews %}
+              {% if session.admin == 1 or session.user_id == review.user_id %}
+                <li>
+                    <b>From: {{ review.username }}</b>
+                    review: {{ review.review }}
+                    <button type="submit" name="delete" value="{{ review.id }}">Poista</button>
+                </li>
+              {% endif %}
+            {% endfor %}
+          </ul>
+        </form>
+            
 
 
             {% else %}
@@ -61,10 +67,5 @@
                 Ei vielä ole arvosteluja
             </ul>
         {% endif %}
-<!-- Add icon library -->
-
-
-
-
     {% endif %}
 {% endblock %}

@@ -21,7 +21,6 @@ class BookService:
     
     def get_info(self, book_id):
         book = self._book_repository.get_info(book_id)
-        print(book)
         if book == None:
             raise Exception("Kirjaa ei löytynyt")
         return book

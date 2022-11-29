@@ -36,8 +36,19 @@ def render_book(book_id):
         review_service.add_review(user_id=session["user_id"], username=session["username"], book_id=book_id, stars=stars, review=review)
         return redirect_to_book(book_id)
     except Exception as error:
-        flash(str(error))
-        return redirect_to_book(book_id)
+      flash(str(error))
+      return redirect_to_book(book_id)
+@app.route("/book/<int:book_id>/review", methods=["POST"])
+def delete_review(book_id):
+
+    if request.form['delete']:
+      id_to_delete = request.form["delete"]
+      delete = review_service.delete_review(id_to_delete)
+      if delete:
+          flash("Poisto onnistui")
+      else:
+          flash("Poisto ei onnistunut")
+      return redirect_to_book(book_id)
 
 @app.route("/search")
 def search():
@@ -75,7 +86,7 @@ def register_new_user():
     username = request.form.get("username")
     password = request.form.get("password")
     password_confirmation = request.form.get("password_confirmation")
-    role = 1
+    role = 0
 
     try:
         user_service.create_user(username, password, password_confirmation, role)
