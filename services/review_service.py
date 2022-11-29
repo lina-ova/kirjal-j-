@@ -24,5 +24,8 @@ class ReviewService:
     def delete_review(self, review_id):
         return self._review_repository.hide_review(review_id)
 
+    def delete_reviews_of_book(self, book_id):
+      return self._review_repository.hide_reviews(book_id)
+
 
 review_service = ReviewService()

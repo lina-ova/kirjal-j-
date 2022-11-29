@@ -6,7 +6,7 @@ class BookService:
     def __init__(self, book_repository=default_book_repository):
         self._book_repository = book_repository
 
-    def add_new_book(self, admin, name, author, description, genre):
+    def add_new_book(self, admin, name, author, description, genres):
         if admin != 1:
             raise Exception ('sinulla ei ole oikeuksia tähän toimintoon')
         if len(name) < 3 or len(name) > 50:
@@ -15,9 +15,9 @@ class BookService:
             raise Exception("Anna kirjoittajan nimi enintään 100 merkin pituisena")
         if len(description) > 300:
             raise Exception("Anna enintään 300 merkin pituinen kuvaus")
-        if len(genre) < 3 or len(genre) > 50: 
-            raise Exception("Anna genre 3-50 merkin pituisena")
-        self._book_repository.add_book(name, author, description, genre)
+        if len(genres) == 0: 
+            raise Exception("Anna joku genre")
+        self._book_repository.add_book(name, author, description, genres)
     
     def get_info(self, book_id):
         book = self._book_repository.get_info(book_id)

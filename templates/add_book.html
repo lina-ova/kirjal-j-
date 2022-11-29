@@ -31,14 +31,13 @@ Lisää uuden kirjaaan
         <label for="description">Kuvaus</label>
         <input type="text" name="description" id="description" /> *
     </div>
-  
     <div>
-        <label for="genre">Genre</label>
-        <input type="text" name="genre" id="genre" /> *
-    </div>
-  
+      <label for="genres">Genre *</label>
+      {% for genre in genres %}
 
-  
+        <input type="checkbox" name="genres" value={{ genre.id }}> {{ genre.name }}
+    </div>
+      {% endfor %}
     <button>
         Lisää kirjan
     </button>
@@ -48,3 +47,10 @@ kaikki rivit ovat pakollisia *
 <br>
 {% endif %}
 {% endblock %}
+<!-- 
+то что не может меня затискать
+проигрывать и умирать в днд
+запланированную игру не провести
+
+
+что ты скрывал от родителей??? -->

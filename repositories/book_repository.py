@@ -3,24 +3,24 @@ from entities.book import Book
 
 def get_book_by_row(row):
     return Book(row['id'], row['name'], row["author"], row['description'], \
-        row['genre'], row['stars'], row['visible']) if row else None
+        row['genres'], row['stars'], row['visible']) if row else None
 
 class BookRepository:
     def __init__(self, connection):
         self.connection = connection
 
-    def add_book(self, name, author, description, genre, stars=0, visible=1):
+    def add_book(self, name, author, description, genres, stars=0, visible=1):
         cursor = self.connection.session
-        sql = "INSERT INTO books (name, author, description, genre, stars, visible) VALUES (:name, :author, :description, :genre, :stars, :visible)"
-        cursor.execute(sql, {"name":name, "author":author, "description":description, "genre":genre, "stars":stars, "visible":visible})
+
+        sql = "INSERT INTO books (name, author, description, genres, stars, visible) VALUES (:name, :author, :description, :genres, :stars, :visible)"
+        cursor.execute(sql, {"name":name, "author":author, "description":description, "genres":genres, "stars":stars, "visible":visible})
         cursor.commit()
 
     def get_books(self):
         """Palauttaa kaikki kirjat listana"""
 
         cursor = self.connection.session
-        sql = """SELECT id, name, author, description, genre, stars, visible FROM books"""
-        cursor.execute(sql)
+        sql = """SELECT id, name, author, description, genres, stars, visible FROM books ORDER BY stars DESC"""
         rows = cursor.execute(sql).fetchall()
         return list(map(get_book_by_row, rows))
 
@@ -30,7 +30,7 @@ class BookRepository:
         cursor = self.connection.session
 
         try:
-            sql = """SELECT id, name, author, description, genre, stars, visible FROM books WHERE name LIKE :query AND visible=1"""
+            sql = """SELECT id, name, author, description, genres, stars, visible FROM books WHERE name LIKE :query AND visible=1 ORDER BY stars DESC"""
             rows = cursor.execute(sql, {"query":"%"+query+"%"}).fetchall()
             return list(map(get_book_by_row, rows))
         except:
@@ -41,7 +41,7 @@ class BookRepository:
         cursor = self.connection.session
 
 
-        sql = """SELECT id, name, author, description, genre, stars, visible FROM books WHERE id=:book_id"""
+        sql = """SELECT id, name, author, description, genres, stars, visible FROM books WHERE id=:book_id"""
         book = cursor.execute(sql, {"book_id":book_id}).fetchone()
 
         return Book(book[0],book[1],book[2],book[3],book[4],book[5],book[6])

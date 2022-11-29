@@ -3,16 +3,19 @@ from app import app
 from services.book_service import book_service
 from services.user_service import user_service
 from services.review_service import review_service
+from services.genre_service import genre_service
 
 @app.route("/", methods=["GET"])
 def render_index():
     visible_books = book_service.get_visible_books()
     return render_template("index.html", books=visible_books)
+
 @app.route("/", methods=["POST"])
-def delete_tip():
+def delete_book():
     id_to_delete = request.form["delete"]
     delete = book_service.delete_book(id_to_delete)
-    if delete:
+    delete_reviews = review_service.delete_reviews_of_book(id_to_delete)
+    if delete and delete_reviews:
         flash("Poisto onnistui")
     else:
         flash("Poisto ei onnistunut")
@@ -24,7 +27,8 @@ def render_book(book_id):
     try: 
         book = book_service.get_info(book_id)
         reviews = review_service.get_visible_reviews(book_id)
-        return render_template("book.html", reviews=reviews, book=book)
+        genres = genre_service.get_genres_of_book(book.genres)
+        return render_template("book.html", reviews=reviews, book=book, genres=genres)
     except Exception as error:
         flash(str(error))
         return redirect_to_index()
@@ -38,6 +42,7 @@ def render_book(book_id):
     except Exception as error:
       flash(str(error))
       return redirect_to_book(book_id)
+
 @app.route("/book/<int:book_id>/review", methods=["POST"])
 def delete_review(book_id):
 
@@ -58,17 +63,19 @@ def search():
 
 @app.route("/add_book", methods=["GET"])
 def render_add_book():
-    return render_template("add_book.html")
+    genres = genre_service.get_genres()
+    return render_template("add_book.html", genres=genres)
+
 
 @app.route("/add_book", methods=["POST"])
 def add_new_book():
     name = request.form.get("name")
     author = request.form.get("author")
     description = request.form.get("description")
-    genre = request.form.get("genre")
+    genres = list(map(int, request.form.getlist("genres"))) 
     admin = session["admin"]
     try:
-        book_service.add_new_book(admin, name, author, description, genre )
+        book_service.add_new_book(admin, name, author, description, genres )
         return redirect_to_index()
 
     except Exception as error:

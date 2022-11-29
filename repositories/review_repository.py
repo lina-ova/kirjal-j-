@@ -38,5 +38,17 @@ class ReviewRepository:
         except:
             return False
         return True
+    def hide_reviews(self, book_id):
+        """Asettaa kirjataulun visible-sarakkeeseen arvon False.
+        Metodin avulla voidaan piilottaa haluttu rivi."""
+
+        cursor = self.connection.session
+        try:
+            sql = """UPDATE reviews SET visible=0 WHERE book_id=:book_id"""
+            cursor.execute(sql, {"book_id":book_id})
+            cursor.commit()
+        except:
+            return False
+        return True
 
 review_repository = ReviewRepository(database_connection)

@@ -10,8 +10,8 @@ CREATE TABLE books (
     name TEXT,
     author TEXT,
     description TEXT,
-    genre TEXT, 
-    stars INTEGER,
+    genres INTEGER ARRAY, 
+    stars FLOAT,
     visible INTEGER
 );
 
@@ -24,3 +24,8 @@ CREATE TABLE reviews (
     review TEXT, 
     time TIMESTAMP, 
     visible INTEGER);
+
+CREATE TABLE genres (
+    id SERIAL PRIMARY KEY,
+    name TEXT
+);
