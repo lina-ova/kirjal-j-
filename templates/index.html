@@ -30,6 +30,10 @@ Kirjaläjä
 {% endwith %}
 
 <form action="/search" method="GET">
+  <select name="search_option" id="option">
+    <option value="name" selected>kirjan nimi</option>
+    <option value="author">kirjailja</option>
+  </select>
   <input type="text" name="search" id="search">
   <input type="submit" value="Etsi">
 </form>

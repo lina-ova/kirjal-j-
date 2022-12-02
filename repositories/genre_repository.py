@@ -16,7 +16,7 @@ class GenreRepository:
 
   def get_genres_of_book(self, genres):
     cursor = self.connection.session
-    sql = "SELECT id, name FROM unnest(:genres) book_genre LEFT JOIN genres g on g.id=book_genre"
+    sql = "SELECT id, name FROM unnest(:genres) book_genre LEFT JOIN genres g on g.id=book_genre WHERE visible=1"
     rows = cursor.execute(sql, {'genres':genres}).fetchall()
     return list(map(get_genre_by_row, rows))
 

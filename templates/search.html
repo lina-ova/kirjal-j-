@@ -28,9 +28,17 @@ Kirjaläjä
   </ul>
 {% endif %}
 {% endwith %}
-
 <form action="/search" method="GET">
-  <input type="text" name="search" id="search">
+  <select name="search_option" id="option">
+    {% if option=="name" %}
+      <option value="name" selected>kirjan nimi</option>
+      <option value="author">author</option>
+    {% else %}
+      <option value="name" >kirjan nimi</option>
+      <option value="author" selected>kirjailja</option>
+    {% endif %}
+  </select>
+  <input type="text" name="search" id="search" value={{query}}>
   <input type="submit" value="Etsi">
 </form>
 <br>

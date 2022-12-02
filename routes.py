@@ -61,8 +61,9 @@ def delete_review(book_id):
 @app.route("/search", methods=['GET'])
 def search():
   query = request.args["search"]
-  books = book_service.get_searched_books(query)
-  return render_template("search.html", books=books)
+  option = request.args['search_option']
+  books = book_service.get_searched_books(query, option)
+  return render_template("search.html", books=books, option=option, query=query)
 
 @app.route("/add_book", methods=["GET"])
 def render_add_book():

@@ -36,8 +36,14 @@ class BookService:
       abort(403)
     return self._book_repository.hide_book(book_id)
 
-  def get_searched_books(self, query):
-    return self._book_repository.get_searched_books(query)
+  def get_searched_books(self, query, option):
+    if option==None or query==None:
+      return self.get_visible_books()
+    print(query, option)
+    if option=='name':
+      return self._book_repository.get_searched_books_title(query)
+    if option=='author':
+      return self._book_repository.get_searched_books_author(query)
 
   def add_stars(self, book_id, stars, csrf_token):
     if book_id==None or stars==None: 

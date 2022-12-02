@@ -24,12 +24,22 @@ class BookRepository:
         rows = cursor.execute(sql).fetchall()
         return list(map(get_book_by_row, rows))
 
-    def get_searched_books(self, query):
+    def get_searched_books_title(self, query):
         """Palauttaa kirjojen nimeistä haetut tulokset"""
 
         cursor = self.connection.session
         try:
             sql = """SELECT id, name, author, description, genres, stars, visible FROM books WHERE name LIKE :query AND visible=1 ORDER BY stars DESC"""
+            rows = cursor.execute(sql, {"query":"%"+query+"%"}).fetchall()
+            return list(map(get_book_by_row, rows))
+        except:
+            return []
+    def get_searched_books_author(self, query):
+        """Palauttaa kirjojen nimeistä haetut tulokset"""
+
+        cursor = self.connection.session
+        try:
+            sql = """SELECT id, name, author, description, genres, stars, visible FROM books WHERE author LIKE :query AND visible=1 ORDER BY stars DESC"""
             rows = cursor.execute(sql, {"query":"%"+query+"%"}).fetchall()
             return list(map(get_book_by_row, rows))
         except:
