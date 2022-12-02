@@ -21,7 +21,7 @@ class ReviewRepository:
 
     def get_reviews(self, book_id):
         cursor = self.connection.session
-        sql = "SELECT id, user_id, username, book_id, stars,review, time, visible FROM reviews WHERE book_id=:book_id"
+        sql = "SELECT id, user_id, username, book_id, stars,review, time, visible FROM reviews WHERE book_id=:book_id AND visible=1"
         rows = cursor.execute(sql, {"book_id":book_id}).fetchall()
         return list(map(get_review_by_row, rows))
 

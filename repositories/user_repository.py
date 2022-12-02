@@ -8,9 +8,7 @@ class UserRepository:
         cursor = self.connection.session
         sql = "INSERT INTO users (username, password, admin) VALUES (:username, :password, :admin)"
         try:
-
             cursor.execute(sql, {"username": username, "password": password, "admin":role})
-
             cursor.commit()
         except:
             return False
@@ -39,7 +37,7 @@ class UserRepository:
         sql = "SELECT id, admin FROM users WHERE username=:username"
         result = cursor.execute(sql, {"username":username}).fetchone()
         user_id = result[0]
-        role = result[1]
-        return user_id, role
+        admin = result[1]
+        return user_id,admin
 
 user_repository = UserRepository(database_connection)

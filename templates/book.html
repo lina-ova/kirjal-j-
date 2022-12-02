@@ -45,6 +45,7 @@
             <label for="stars5">5</label>
           </div>
           <textarea id="review" name="review" rows="4" cols="50" ></textarea>
+          <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
           <button type="submit">Lähetä</button>
         </form>
         {% else %}
@@ -58,6 +59,7 @@
                 <li>
                     <b>From: {{ review.username }}</b>
                     review: {{ review.review }}
+                    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
                     <button type="submit" name="delete" value="{{ review.id }}">Poista</button>
                 </li>
               {% endif %}

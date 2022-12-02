@@ -45,6 +45,7 @@ Kirjaläjä
         </a>, {{ book.author }}, {{ book.description }}
 
         {% if session.admin == 1%}
+        <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
         <button type="submit" name="delete" value="{{ book.id }}">Poista</button>
         {% endif %}
       </li>

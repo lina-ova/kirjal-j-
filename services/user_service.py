@@ -34,7 +34,7 @@ class UserService:
         session["username"] = username
         session["user_id"] = role_and_id[0]
         session["admin"] = role_and_id[1]
-        session["scrf_token"] = secrets.token_hex(16)
+        session["csrf_token"] = secrets.token_hex(16)
 
     def logout(self):
         del session["username"]

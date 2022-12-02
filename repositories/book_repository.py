@@ -20,7 +20,7 @@ class BookRepository:
         """Palauttaa kaikki kirjat listana"""
 
         cursor = self.connection.session
-        sql = """SELECT id, name, author, description, genres, stars, visible FROM books ORDER BY stars DESC"""
+        sql = """SELECT id, name, author, description, genres, stars, visible FROM books WHERE visible=1 ORDER BY stars DESC"""
         rows = cursor.execute(sql).fetchall()
         return list(map(get_book_by_row, rows))
 
@@ -28,19 +28,15 @@ class BookRepository:
         """Palauttaa kirjojen nimeistä haetut tulokset"""
 
         cursor = self.connection.session
-
         try:
             sql = """SELECT id, name, author, description, genres, stars, visible FROM books WHERE name LIKE :query AND visible=1 ORDER BY stars DESC"""
             rows = cursor.execute(sql, {"query":"%"+query+"%"}).fetchall()
             return list(map(get_book_by_row, rows))
         except:
             return []
-        return rows
 
     def get_info(self, book_id):
         cursor = self.connection.session
-
-
         sql = """SELECT id, name, author, description, genres, stars, visible FROM books WHERE id=:book_id"""
         book = cursor.execute(sql, {"book_id":book_id}).fetchone()
 

@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+
+{% block title %}
+palaute
+{% endblock %}
+
+{% block body %}
+<h1>Lisää uuden kirjan</h1>
+<form action="/feedback" method="POST">
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul>
+        {% for message in messages %}
+          {{ message }}
+        {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+    <div>
+        <label for="feedback">palaute</label>
+        <textarea id="feedback" name="feedback" rows="4" cols="50" ></textarea>
+    </div>
+  
+    <button>
+        Anna palaute
+    </button>
+</form>
+{% endblock %}

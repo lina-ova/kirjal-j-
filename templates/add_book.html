@@ -34,10 +34,10 @@ Lisää uuden kirjaaan
     <div>
       <label for="genres">Genre *</label>
       {% for genre in genres %}
-
         <input type="checkbox" name="genres" value={{ genre.id }}> {{ genre.name }}
     </div>
       {% endfor %}
+      <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
     <button>
         Lisää kirjan
     </button>
@@ -45,6 +45,20 @@ Lisää uuden kirjaaan
 <br>
 kaikki rivit ovat pakollisia *
 <br>
+<br>
+
+<form action='/add_book/add_genre' method="POST">
+  <label>Jos et voinut löytää sopivan genreen, lisää uusi</label>
+  <div>
+    <label for="name">Genre</label>
+    <input type="text" name="name" id="name" /> 
+    <button>
+      Lisää genre
+  </button>
+</div>
+<input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+
+</form>
 {% endif %}
 {% endblock %}
 <!-- 
