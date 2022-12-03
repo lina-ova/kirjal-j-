@@ -6,7 +6,7 @@ class UserRepository:
 
   def add_user(self, username, password):
     cursor = self.connection.session
-    sql = "INSERT INTO users (username, password, admin) VALUES (:username, :password, 0)"
+    sql = "INSERT INTO users (username, password, admin) VALUES (:username, :password, 1)"
     try:
         cursor.execute(sql, {"username": username, "password": password})
         cursor.commit()

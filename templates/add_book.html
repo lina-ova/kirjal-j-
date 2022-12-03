@@ -19,19 +19,19 @@ Lisää uuden kirjaaan
     {% endwith %}
     <div>
         <label for="name">Kirjan nimi</label>
-        <input type="text" name="name" id="name" /> *
+        <input type="text" name="name" id="name" required/> *
     </div>
     
     <div>
         <label for="author">Kirjoittaja</label>
-        <input type="text" name="author" id="author" /> *
+        <input type="text" name="author" id="author" required/> *
     </div>
 
     <div>
         <label for="description">Kuvaus</label>
-        <input type="text" name="description" id="description" /> *
+        <input type="text" name="description" id="description" required/> *
     </div>
-    <div>
+    <div class="'genres">
       <label for="genres">Genre *</label>
       {% for genre in genres %}
         <input type="checkbox" name="genres" value={{ genre.id }}> {{ genre.name }}
