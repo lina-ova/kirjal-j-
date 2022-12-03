@@ -2,7 +2,8 @@ CREATE TABLE users (
     id SERIAL PRIMARY KEY,
     username TEXT,
     password TEXT,
-    admin INTEGER
+    admin INTEGER,
+    favourites INTEGER ARRAY
 );
 
 CREATE TABLE books (

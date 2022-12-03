@@ -1,4 +1,4 @@
-from flask import render_template, request, flash, redirect, url_for
+from flask import render_template, request, flash, redirect, url_for, session
 from app import app
 from services.book_service import book_service
 from services.user_service import user_service
@@ -11,7 +11,7 @@ def render_index():
   visible_books = book_service.get_visible_books()
   return render_template("index.html", books=visible_books)
 
-@app.route("/", methods=["POST"])
+@app.route("/delete", methods=["POST"])
 def delete_book():
   id_to_delete = request.form.get("delete")
   csrf_token=request.form.get('csrf_token')
@@ -22,6 +22,18 @@ def delete_book():
   else:
     flash("Poisto ei onnistunut")
   return redirect_to_index()
+
+@app.route("/favourite", methods=["POST"])
+def favourite_book():
+  try:
+    id_to_fav = request.form.get("favourite")
+    id_to_unfav = request.form.get("unfavourite")
+    csrf_token=request.form.get('csrf_token')
+    user_service.fav_book(id_to_fav, id_to_unfav, csrf_token)
+    return redirect_to_index()
+  except Exception as error:
+      flash(str(error))
+      return redirect_to_index()
 
 @app.route("/book/<int:book_id>", methods=["GET", "POST"])
 def render_book(book_id):

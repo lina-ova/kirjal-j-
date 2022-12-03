@@ -41,19 +41,32 @@ Kirjaläjä
 <br>
 
 {% if books %}
-<form action="/" method="POST">
+
   <ul>
       {% for book in books %}
         <li>
+
           <a href="/book/{{ book.id }}"> {{ book.name }}</a>,{{ book.author }}, {{ book.description }}
-          {% if session.admin == 1 %}
-          <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
-          <button type="submit" name="delete" value="{{ book.id }}">Poista</button>
-          {% endif %}
+          <form action="/delete" method="POST">
+            {% if session.admin == 1 %}
+            <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+            <button type="submit" name="delete" value="{{ book.id }}">Poista</button>
+            {% endif %}
+          </form>
+
+          <form action="/favourite" method="POST">
+            {% if book.id in session.favourites %}
+            <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+            <button type="submit" name="unfavourite" value="{{ book.id }}">♥</button>
+            {% else %}
+            <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+            <button type="submit" name="favourite" value="{{ book.id }}">♡</button>
+            {% endif %}
+          </form>
         </li>
       {% endfor %}
   </ul>
-</form>
+
 {% else %}
 <ul>
     Ei vielä ole kirjoja
