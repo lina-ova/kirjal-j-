@@ -49,23 +49,38 @@
           <button type="submit">Lähetä</button>
         </form>
         {% else %}
-            Kirjaudu tai registeröidy ensin
+            Kirjaudu tai registeröidy kommentaaksen kirjan 
         {% endif %}
         {% if reviews %}
-        <form action="/book/{{ book.id }}/review" method="POST" name="delete">
+
           <ul>
             {% for review in reviews %}
-              {% if session.admin == 1 or session.user_id == review.user_id %}
+              
                 <li>
                     <b>From: {{ review.username }}</b>
                     review: {{ review.review }}
-                    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
-                    <button type="submit" name="delete" value="{{ review.id }}">Poista</button>
+
+                    {% if session.admin == 1 or session.user_id == review.user_id %}
+                      <form action="/book/{{ book.id }}/review" method="POST" name="delete"></form>
+                        <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+                        <button type="submit" name="delete" value="{{ review.id }}">Poista</button>
+                      </form>
+                    {% endif %}
+                    <form action="/book/{{ book.id }}/review" method="POST">
+                      {% if review.id in session.favourite_reviews %}
+                      <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+                      <button type="submit" name="unfavourite" value="{{ review.id }}">♥</button>
+                      {% else %}
+                      <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+                      <button type="submit" name="favourite" value="{{ review.id }}">♡</button>
+                      {% endif %}
+                    </form>
                 </li>
-              {% endif %}
+              
             {% endfor %}
           </ul>
-        </form>
+        
+
             {% else %}
             <ul>
                 Ei vielä ole arvosteluja

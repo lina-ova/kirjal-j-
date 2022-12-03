@@ -34,16 +34,17 @@ class UserRepository:
 
   def get_info(self, username):
     cursor=self.connection.session
-    sql = "SELECT id, admin, favourites FROM users WHERE username=:username"
+    sql = "SELECT id, admin, favourite_books, favourite_reviews FROM users WHERE username=:username"
     result = cursor.execute(sql, {"username":username}).fetchone()
     user_id = result[0]
     admin = result[1]
-    favourites=result[2] 
-    return user_id, admin, favourites
+    favourite_books=result[2] 
+    favourite_reviews=result[3] 
+    return user_id, admin, favourite_books, favourite_reviews
   
   def book_favourite(self, user_id, book_id):
     cursor = self.connection.session
-    sql = """UPDATE users SET favourites = array_append(favourites, :book_id) WHERE id=:user_id """
+    sql = """UPDATE users SET favourite_books = array_append(favourite_books, :book_id) WHERE id=:user_id """
     try:
       cursor.execute(sql, {"book_id":book_id, "user_id":user_id})
       cursor.commit()
@@ -53,9 +54,29 @@ class UserRepository:
   
   def book_unfavourite(self, user_id, book_id):
     cursor = self.connection.session
-    sql = """UPDATE users SET favourites = array_remove(favourites, :book_id) WHERE id=:user_id """
+    sql = """UPDATE users SET favourite_books = array_remove(favourite_books, :book_id) WHERE id=:user_id """
     try:
       cursor.execute(sql, {"book_id":book_id, "user_id":user_id})
+      cursor.commit()
+    except:
+      return False
+    return True
+  
+  def review_favourite(self, user_id, review_id):
+    cursor = self.connection.session
+    sql = """UPDATE users SET favourite_reviews = array_append(favourite_reviews, :review_id) WHERE id=:user_id """
+    try:
+      cursor.execute(sql, {"review_id":review_id, "user_id":user_id})
+      cursor.commit()
+    except:
+      return False
+    return True
+  
+  def review_unfavourite(self, user_id, review_id):
+    cursor = self.connection.session
+    sql = """UPDATE users SET favourite_reviews = array_remove(favourite_reviews, :review_id) WHERE id=:user_id """
+    try:
+      cursor.execute(sql, {"review_id":review_id, "user_id":user_id})
       cursor.commit()
     except:
       return False

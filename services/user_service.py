@@ -36,9 +36,26 @@ class UserService:
     if session["csrf_token"] != csrf_token:
       abort(403)
     if id_fav !=None:
-      success = self._user_repository.book_favourite(user_id = session['user_id'], book_id=id_fav)
+      success = self._user_repository.book_favourite(user_id = session['user_id'], review_id=id_fav)
     if id_unfav !=None:
-      success = self._user_repository.book_unfavourite(user_id = session['user_id'], book_id=id_unfav)
+      success = self._user_repository.book_unfavourite(user_id = session['user_id'], review_id=id_unfav)
+    
+    if success:
+      self._set_session(session['username'])
+      return True
+    return False
+
+  def fav_review(self,id_fav, id_unfav, csrf_token):
+    if id_fav==None and id_unfav==None:
+      raise Exception('Jotain meni vikaan')
+    if session['user_id'] == None:
+      raise Exception('Kirjaudu tai registeröidy ensin')
+    if session["csrf_token"] != csrf_token:
+      abort(403)
+    if id_fav !=None:
+      success = self._user_repository.review_favourite(user_id = session['user_id'], review_id=id_fav)
+    if id_unfav !=None:
+      success = self._user_repository.review_unfavourite(user_id = session['user_id'], review_id=id_unfav)
     
     if success:
       self._set_session(session['username'])
@@ -52,13 +69,17 @@ class UserService:
     session["username"] = username
     session["user_id"] = info[0]
     session["admin"] = info[1]
-    session["favourites"] = info[2] or []
+    session["favourite_books"] = info[2] or []
+    session["favourite_reviews"] = info[3] or []
     session["csrf_token"] = secrets.token_hex(16)
 
   def logout(self):
     del session["username"]
     del session["user_id"]
-    del session["admin"] 
+    del session["admin"]
+    del session["favourite_books"]
+    del session["favourite_reviews"]
+ 
     del session["csrf_token"] 
 
 user_service = UserService()

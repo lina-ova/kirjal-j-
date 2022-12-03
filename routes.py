@@ -23,7 +23,7 @@ def delete_book():
     flash("Poisto ei onnistunut")
   return redirect_to_index()
 
-@app.route("/favourite", methods=["POST"])
+@app.route("/favourite_book", methods=["POST"])
 def favourite_book():
   try:
     id_to_fav = request.form.get("favourite")
@@ -34,6 +34,17 @@ def favourite_book():
   except Exception as error:
       flash(str(error))
       return redirect_to_index()
+@app.route("/book/<int:book_id>/review", methods=["POST"])
+def favourite_review(book_id):
+  try:
+    id_to_fav = request.form.get("favourite")
+    id_to_unfav = request.form.get("unfavourite")
+    csrf_token=request.form.get('csrf_token')
+    user_service.fav_review(id_to_fav, id_to_unfav, csrf_token)
+    return redirect_to_book(book_id)
+  except Exception as error:
+      flash(str(error))
+      return redirect_to_book(book_id)
 
 @app.route("/book/<int:book_id>", methods=["GET", "POST"])
 def render_book(book_id):

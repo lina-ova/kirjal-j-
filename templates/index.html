@@ -54,8 +54,8 @@ Kirjaläjä
             {% endif %}
           </form>
 
-          <form action="/favourite" method="POST">
-            {% if book.id in session.favourites %}
+          <form action="/favourite_book" method="POST">
+            {% if book.id in session.favourite_books %}
             <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
             <button type="submit" name="unfavourite" value="{{ book.id }}">♥</button>
             {% else %}

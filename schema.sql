@@ -3,7 +3,8 @@ CREATE TABLE users (
     username TEXT,
     password TEXT,
     admin INTEGER,
-    favourites INTEGER ARRAY
+    favourite_books INTEGER ARRAY,
+    favourite_reviews INTEGER ARRAY
 );
 
 CREATE TABLE books (
