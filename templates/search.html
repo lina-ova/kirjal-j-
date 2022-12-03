@@ -44,22 +44,38 @@ Kirjaläjä
 <br>
 
 {% if books %}
-<form action="/" method="POST">
+
 <ul>
     {% for book in books %}
       <li>
         <a href="/book/{book.id}}">
-          <b>{{ book.name }}</b>
-        </a>, {{ book.author }}, {{ book.description }}
-
+          {% if book.cover %}
+          <img src="{{ book.cover }}" alt="{{ book.name }}" width="400" height="500">
+          {% else %}
+          <img src="../static/not_found.jpg" alt="{{ book.name }}" width="400" height="500">
+          {% endif %}
+        </a>,{{ book.author }}, {{ book.description }}
         {% if session.admin == 1%}
-        <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
-        <button type="submit" name="delete" value="{{ book.id }}">Poista</button>
+        <form action="/" method="POST">
+          <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+          <button type="submit" name="delete" value="{{ book.id }}">Poista</button>
+      </form>
         {% endif %}
+        <form action="/favourite_book" method="POST">
+          {% if book.id in session.favourite_books %}
+          <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+          <button type="submit" name="unfavourite" value="{{ book.id }}">♥</button>
+          {% else %}
+          <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+          <button type="submit" name="favourite" value="{{ book.id }}">♡</button>
+          {% endif %}
+        </form>
       </li>
     {% endfor %}
 </ul>
-</form>
+
+
+
 {% else %}
 <ul>
     Ei hakutuloksia kyseisellä haulla.

@@ -36,10 +36,12 @@ class UserService:
     if session["csrf_token"] != csrf_token:
       abort(403)
     if id_fav !=None:
-      success = self._user_repository.book_favourite(user_id = session['user_id'], review_id=id_fav)
+      success= self._user_repository.book_favourite(user_id = session['user_id'], book_id=id_fav)
+
     if id_unfav !=None:
-      success = self._user_repository.book_unfavourite(user_id = session['user_id'], review_id=id_unfav)
-    
+      success= self._user_repository.book_unfavourite(user_id = session['user_id'], book_id=id_unfav)
+
+
     if success:
       self._set_session(session['username'])
       return True

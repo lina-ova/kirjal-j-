@@ -21,7 +21,11 @@
         <h2>Kirjan nimi:</h2> <h3> {{ book.name }}</h3> 
 
         <br>
-
+        {% if book.cover %}
+        <img src="{{ book.cover }}" alt="{{ book.name }}" width="400" height="500">
+        {% else %}
+        <img src="../static/not_found.jpg" alt="{{ book.name }}" width="400" height="500">
+        {% endif %}
         <h4><b>Kirjoittaja: </b> {{ book.author }} </h4> 
         <h4><b>stars: </b> {{ book.stars }} </h4> 
         <h4><b>Kuvaus: </b> {{ book.description }} </h4> 

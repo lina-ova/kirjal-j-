@@ -28,7 +28,7 @@ Lisää uuden kirjaaan
     </div>
 
     <div>
-        <label for="description">Kuvaus</label>
+      <label for="description">Kuvaus</label>
         <input type="text" name="description" id="description" required/> *
     </div>
     <div class="'genres">
@@ -37,6 +37,10 @@ Lisää uuden kirjaaan
         <input type="checkbox" name="genres" value={{ genre.id }}> {{ genre.name }}
     </div>
       {% endfor %}
+      <div>
+        <label for="cover">Cover</label>
+        <input type="url" name="cover" id="cover" /> *
+    </div>
       <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
     <button>
         Lisää kirjan

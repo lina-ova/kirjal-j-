@@ -12,8 +12,8 @@ CREATE TABLE books (
     name TEXT,
     author TEXT,
     description TEXT,
-    genres INTEGER ARRAY, 
-    stars FLOAT,
+    genres INTEGER ARRAY,
+    cover TEXT,
     visible INTEGER
 );
 

@@ -46,7 +46,13 @@ Kirjaläjä
       {% for book in books %}
         <li>
 
-          <a href="/book/{{ book.id }}"> {{ book.name }}</a>,{{ book.author }}, {{ book.description }}
+          <a href="/book/{{ book.id }}"> 
+            {% if book.cover %}
+            <img src="{{ book.cover }}" alt="{{ book.name }}" width="400" height="500">
+            {% else %}
+            <img src="../static/not_found.jpg" alt="{{ book.name }}" width="400" height="500">
+            {% endif %}
+          </a>,{{ book.author }}, {{ book.description }}
           <form action="/delete" method="POST">
             {% if session.admin == 1 %}
             <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
