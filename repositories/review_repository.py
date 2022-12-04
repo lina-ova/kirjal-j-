@@ -51,4 +51,13 @@ class ReviewRepository:
             return False
         return True
 
+    def get_stats(self, book_id):
+        cursor = self.connection.session
+        try:
+          sql = "SELECT COUNT (reviews), sum(stars) FROM reviews WHERE book_id=:book_id AND visible=1"
+          reviews = cursor.execute(sql, {"book_id":book_id}).fetchone()
+          return reviews
+        except:
+            return False
+
 review_repository = ReviewRepository(database_connection)

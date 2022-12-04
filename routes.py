@@ -34,7 +34,20 @@ def favourite_book():
   except Exception as error:
       flash(str(error))
       return redirect_to_index()
-@app.route("/book/<int:book_id>/review", methods=["POST"])
+
+@app.route("/book/<int:book_id>/review/delete", methods=["POST"])
+def delete_review(book_id):
+  id_to_delete = request.form.get("delete")
+  csrf_token=request.form.get('csrf_token')
+
+  delete = review_service.delete_review(id_to_delete, csrf_token)
+  if delete:
+    flash("Poisto onnistui")
+  else:
+    flash("Poisto ei onnistunut")
+  return redirect_to_book(book_id)
+
+@app.route("/book/<int:book_id>/review/like", methods=["POST"])
 def favourite_review(book_id):
   try:
     id_to_fav = request.form.get("favourite")
@@ -53,7 +66,8 @@ def render_book(book_id):
       book = book_service.get_info(book_id)
       reviews = review_service.get_visible_reviews(book_id)
       genres = genre_service.get_genres_of_book(book.genres)
-      return render_template("book.html", reviews=reviews, book=book, genres=genres)
+      statistics = review_service.get_statistics(book_id)
+      return render_template("book.html", reviews=reviews, book=book, genres=genres, statistics=statistics)
     except Exception as error:
       flash(str(error))
       return redirect_to_index()
@@ -69,17 +83,7 @@ def render_book(book_id):
       flash(str(error))
       return redirect_to_book(book_id)
 
-@app.route("/book/<int:book_id>/review", methods=["POST"])
-def delete_review(book_id):
-  id_to_delete = request.form.get("delete")
-  csrf_token=request.form.get('csrf_token')
 
-  delete = review_service.delete_review(id_to_delete, csrf_token)
-  if delete:
-    flash("Poisto onnistui")
-  else:
-    flash("Poisto ei onnistunut")
-  return redirect_to_book(book_id)
 
 @app.route("/search", methods=['GET'])
 def search():

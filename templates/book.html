@@ -34,6 +34,7 @@
           {%for genre in genres %}
             <p> {{ genre.name }}</p>
           {% endfor %}
+          <p>{{statistics.stars}}</p>
         {% if session.user_id %}
         <form action="/book/{{ book.id }}" method="POST" name="review">
           <div class="stars">
@@ -56,7 +57,7 @@
             Kirjaudu tai registeröidy kommentaaksen kirjan 
         {% endif %}
         {% if reviews %}
-
+          <p>{{statistics.reviews}}</p>
           <ul>
             {% for review in reviews %}
               
@@ -65,12 +66,12 @@
                     review: {{ review.review }}
 
                     {% if session.admin == 1 or session.user_id == review.user_id %}
-                      <form action="/book/{{ book.id }}/review" method="POST" name="delete"></form>
+                      <form action="/book/{{ book.id }}/review/delete" method="POST">
                         <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
                         <button type="submit" name="delete" value="{{ review.id }}">Poista</button>
                       </form>
                     {% endif %}
-                    <form action="/book/{{ book.id }}/review" method="POST">
+                    <form action="/book/{{ book.id }}/review/like" method="POST">
                       {% if review.id in session.favourite_reviews %}
                       <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
                       <button type="submit" name="unfavourite" value="{{ review.id }}">♥</button>

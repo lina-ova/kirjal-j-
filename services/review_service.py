@@ -32,4 +32,10 @@ class ReviewService:
       abort(403)
     return self._review_repository.hide_reviews(book_id)
 
+  def get_statistics(self,book_id):
+    statistics = self._review_repository.get_stats(book_id)
+    if statistics[0] !=None and statistics[1]!=None:
+      return {'reviews':statistics[0], 'stars':statistics[1]/statistics[0]}
+    return {'reviews':0, 'stars':0}
+
 review_service = ReviewService()

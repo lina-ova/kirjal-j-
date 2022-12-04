@@ -48,7 +48,7 @@ Kirjaläjä
 <ul>
     {% for book in books %}
       <li>
-        <a href="/book/{book.id}}">
+        <a href="/book/{{ book.id }}">
           {% if book.cover %}
           <img src="{{ book.cover }}" alt="{{ book.name }}" width="400" height="500">
           {% else %}
