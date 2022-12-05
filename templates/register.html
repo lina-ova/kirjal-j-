@@ -6,7 +6,7 @@ Rekisteröityminen
 
 {% block body %}
 
-<h1>Rekisteröityminen</h1>
+<h3>Rekisteröityminen</h3>
 <form action="/register" method="POST">
     {% with messages = get_flashed_messages() %}
       {% if messages %}
@@ -18,27 +18,29 @@ Rekisteröityminen
       {% endif %}
     {% endwith %}
 
-    <div>
+    <div class="form-group col-6">
         <label for="username">Käyttäjätunnus</label>
         <input type="text" name="username" id="username" required/>
       </div>
 
-    <div>
+    <div class="form-group col-6">
       <label for="password">Salasana</label>
       <input type="password" name="password" id="password" required/>
     </div>
 
-    <div>
+    <div class="form-group col-6">
     <label for="password_confirmation">Salasanan vahvistaminen</label>
     <input type="password" name="password_confirmation" id="password_confirmation" required/>
     </div>
+    <div class="form-group col-6">
+      <button class="btn btn-primary">
+        Rekisteröidy
+      </button>
+    </div>
 
-    <button>
-      Rekisteröidy
-    </button>
 
-    <div>
-      <a href="/login">Kirjaudu sisään</a>
+    <div class="form-group col-6">
+      <label>Jos sinulla on tunnus, voit kirjautua sisään <a href="/login">täältä</a></label>
     </div>
 
   </form>

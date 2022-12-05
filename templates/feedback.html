@@ -5,7 +5,8 @@ palaute
 {% endblock %}
 
 {% block body %}
-<h1>Lisää uuden kirjan</h1>
+<h3>Anna palautteen</h3>
+
 <form action="/feedback" method="POST">
     {% with messages = get_flashed_messages() %}
       {% if messages %}
@@ -16,12 +17,12 @@ palaute
         </ul>
       {% endif %}
     {% endwith %}
-    <div>
+    <div class="form-group col-6">
         <label for="feedback">palaute</label>
-        <textarea id="feedback" name="feedback" rows="4" cols="50" required></textarea>
+        <textarea id="feedback" name="feedback" rows="3" cols="30" required></textarea>
     </div>
   
-    <button>
+    <button type='submit' class="btn btn-primary">
         Anna palaute
     </button>
 </form>

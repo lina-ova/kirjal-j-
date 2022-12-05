@@ -8,8 +8,9 @@ from services.genre_service import genre_service
 
 @app.route("/", methods=["GET"])
 def render_index():
-  visible_books = book_service.get_visible_books()
-  return render_template("index.html", books=visible_books)
+  books = book_service.get_visible_books()
+  genres = genre_service.get_genres()
+  return render_template("index.html", books=books, genres=genres)
 
 @app.route("/delete", methods=["POST"])
 def delete_book():
@@ -59,9 +60,9 @@ def favourite_review(book_id):
       flash(str(error))
       return redirect_to_book(book_id)
 
-@app.route("/book/<int:book_id>", methods=["GET", "POST"])
+@app.route("/book/<int:book_id>", methods=["GET"])
 def render_book(book_id):
-  if request.method == 'GET': 
+
     try: 
       book = book_service.get_info(book_id)
       reviews = review_service.get_visible_reviews(book_id)
@@ -71,18 +72,18 @@ def render_book(book_id):
     except Exception as error:
       flash(str(error))
       return redirect_to_index()
-  elif request.method == 'POST':
+
+@app.route("/book/<int:book_id>/review/add", methods=["POST"])
+def add_review(book_id):
+  try:
     stars = request.form.get("stars")
     review = request.form.get("review")
     csrf_token=request.form.get('csrf_token')
-    try:
-      book_service.add_stars(book_id, stars, csrf_token)
-      review_service.add_review(book_id, stars, review, csrf_token)
-      return redirect_to_book(book_id)
-    except Exception as error:
-      flash(str(error))
-      return redirect_to_book(book_id)
-
+    review_service.add_review(book_id, stars, review, csrf_token)
+    return redirect_to_book(book_id)
+  except Exception as error:
+    flash(str(error))
+    return redirect_to_book(book_id)
 
 
 @app.route("/search", methods=['GET'])
@@ -103,9 +104,11 @@ def add_new_book():
   author = request.form.get("author")
   description = request.form.get("description")
   genres = list(map(int, request.form.getlist("genres"))) 
+  cover = request.form.get("cover")
+
   csrf_token=request.form.get('csrf_token')
   try:
-    book_service.add_new_book(name, author, description, genres, csrf_token )
+    book_service.add_new_book(name, author, description, genres, csrf_token, cover )
     return redirect_to_index()
 
   except Exception as error:
@@ -149,9 +152,10 @@ def render_login():
 
 @app.route("/login", methods=["POST"])
 def try_login():
-  username= request.form.get("username")
-  password = request.form.get("password")
+
   try:
+    username= request.form.get("username")
+    password = request.form.get("password")
     user_service.login(username, password)
     flash(str("Kirjauduit sisään"))
     return redirect_to_index()
@@ -166,10 +170,9 @@ def render_feedback():
 
 @app.route("/feedback", methods=["POST"])
 def give_feedback():
-  feedback = request.form.get("feedback")
-  csrf_token=request.form.get('csrf_token')
-
   try:
+    feedback = request.form.get("feedback")
+    csrf_token=request.form.get('csrf_token')
     feedback_service.add_feedback(feedback, csrf_token)
     return redirect_to_index()
   except Exception as error:

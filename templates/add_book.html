@@ -1,13 +1,13 @@
 {% extends "layout.html" %}
 
 {% block title %}
-Lisää uuden kirjaaan
+  Lisää uuden kirjaaan
 {% endblock %}
 
 {% block body %}
-{% if session.admin == 1 %}
-<h1>Lisää uuden kirjan</h1>
-<form action="/add_book" method="POST">
+  {% if session.admin == 1 %}
+    <h3>Lisää uuden kirjan</h3>
+
     {% with messages = get_flashed_messages() %}
       {% if messages %}
         <ul>
@@ -17,53 +17,64 @@ Lisää uuden kirjaaan
         </ul>
       {% endif %}
     {% endwith %}
-    <div>
-        <label for="name">Kirjan nimi</label>
-        <input type="text" name="name" id="name" required/> *
+    <div class="form-group col-6">
+      <p> * - merkityt rivit ovet pakollisia</p>
     </div>
-    
-    <div>
-        <label for="author">Kirjoittaja</label>
-        <input type="text" name="author" id="author" required/> *
-    </div>
+    <form action="/add_book" method="POST">
 
-    <div>
-      <label for="description">Kuvaus</label>
-        <input type="text" name="description" id="description" required/> *
-    </div>
-    <div class="'genres">
-      <label for="genres">Genre *</label>
-      {% for genre in genres %}
-        <input type="checkbox" name="genres" value={{ genre.id }}> {{ genre.name }}
-    </div>
-      {% endfor %}
-      <div>
-        <label for="cover">Cover</label>
-        <input type="url" name="cover" id="cover" /> *
-    </div>
-      <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
-    <button>
-        Lisää kirjan
-    </button>
-</form>
-<br>
-kaikki rivit ovat pakollisia *
-<br>
+      <div class="form-group col-6">
+        <label for="name">Kirjan nimi *</label>
+        <input type="text" name="name" id="name" required/>
+      </div>
+        
+        <div class="form-group col-6">
+            <label for="author">Kirjoittaja *</label>
+            <input type="text" name="author" id="author" required/>
+        </div>
+
+        <div class="form-group col-6">
+          <label for="description">Kuvaus *</label>
+            <input type="text" name="description" id="description" required/> 
+        </div>
+
+        <div class="form-group col-6">
+          <label for="genres">Genre *</label>
+          {% for genre in genres %}
+            <div>
+              <input type="checkbox" name="genres" value={{ genre.id }}> {{ genre.name }}
+            </div>
+          {% endfor %}
+        </div>
+          <div class="form-group col-6">
+            <label for="cover">Cover</label>
+            <input type="url" name="cover" id="cover" />
+          </div>
+          <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+        <div>
+
+        </div>
+        <button type='submit' class="btn btn-primary">
+            Lisää kirjan
+        </button>
+    </form>
+
 <br>
 
-<form action='/add_book/add_genre' method="POST">
-  <label>Jos et voinut löytää sopivan genreen, lisää uusi</label>
-  <div>
-    <label for="name">Genre</label>
-    <input type="text" name="name" id="name" /> 
-    <button>
-      Lisää genre
-  </button>
-</div>
-<input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+    <form action='/add_book/add_genre' method="POST">
+      <div class="form-group col-6">
+        <label>Jos et voinut löytää sopivan genreen, lisää uusi</label>
+      </div>
 
-</form>
-{% endif %}
+      <div class="form-group col-6">
+        <label for="name">Genre</label>
+        <input type="text" name="name" id="name" /> 
+        <button type='submit' class="btn btn-primary">
+          Lisää genre
+        </button>
+      </div>
+        <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+    </form>
+  {% endif %}
 {% endblock %}
 <!-- 
 то что не может меня затискать

@@ -6,90 +6,107 @@
 
 {% block body %}
 
-    {% with messages = get_flashed_messages() %}
-        {% if messages %}
-            <ul>
-                {% for message in messages %}
-                    {{ message }}
-                {% endfor %}
-            </ul>
-            
-        {% endif %}
-    {% endwith %}
-
-    {% if book %}
-        <h2>Kirjan nimi:</h2> <h3> {{ book.name }}</h3> 
-
-        <br>
-        {% if book.cover %}
-        <img src="{{ book.cover }}" alt="{{ book.name }}" width="400" height="500">
-        {% else %}
-        <img src="../static/not_found.jpg" alt="{{ book.name }}" width="400" height="500">
-        {% endif %}
-        <h4><b>Kirjoittaja: </b> {{ book.author }} </h4> 
-        <h4><b>stars: </b> {{ book.stars }} </h4> 
-        <h4><b>Kuvaus: </b> {{ book.description }} </h4> 
-        <h5>genret</h5> 
-
-          {%for genre in genres %}
-            <p> {{ genre.name }}</p>
-          {% endfor %}
-          <p>{{statistics.stars}}</p>
-        {% if session.user_id %}
-        <form action="/book/{{ book.id }}" method="POST" name="review">
-          <div class="stars">
-            <input id="stars1" type="radio" name="stars" value=1>
-            <label for="stars1">1</label>
-            <input id="stars2" type="radio" name="stars" value=2>
-            <label for="stars2">2</label>
-            <input id="stars3" type="radio" name="stars" value=3>
-            <label for="stars3">3</label>
-            <input id="stars4" type="radio" name="stars" value=4>
-            <label for="stars4">4</label>
-            <input id="stars5" type="radio" name="stars" value=5 checked>
-            <label for="stars5">5</label>
-          </div>
-          <textarea id="review" name="review" rows="4" cols="50" ></textarea>
-          <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
-          <button type="submit">Lähetä</button>
-        </form>
-        {% else %}
-            Kirjaudu tai registeröidy kommentaaksen kirjan 
-        {% endif %}
-        {% if reviews %}
-          <p>{{statistics.reviews}}</p>
+  {% with messages = get_flashed_messages() %}
+      {% if messages %}
           <ul>
-            {% for review in reviews %}
-              
-                <li>
-                    <b>From: {{ review.username }}</b>
-                    review: {{ review.review }}
-
-                    {% if session.admin == 1 or session.user_id == review.user_id %}
-                      <form action="/book/{{ book.id }}/review/delete" method="POST">
-                        <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
-                        <button type="submit" name="delete" value="{{ review.id }}">Poista</button>
-                      </form>
-                    {% endif %}
-                    <form action="/book/{{ book.id }}/review/like" method="POST">
-                      {% if review.id in session.favourite_reviews %}
-                      <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
-                      <button type="submit" name="unfavourite" value="{{ review.id }}">♥</button>
-                      {% else %}
-                      <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
-                      <button type="submit" name="favourite" value="{{ review.id }}">♡</button>
-                      {% endif %}
-                    </form>
-                </li>
-              
-            {% endfor %}
+              {% for message in messages %}
+                  {{ message }}
+              {% endfor %}
           </ul>
-        
+          
+      {% endif %}
+  {% endwith %}
 
-            {% else %}
-            <ul>
-                Ei vielä ole arvosteluja
-            </ul>
+  {% if book %}
+    <div class="container">
+      <div class="row">
+        <div class="col-8">
+          <div><b>Kijan nimi:</b> {{book.name}}</div>
+          <div><b>Kirjoittaja:</b>{{book.author}}</div>
+          <div><b>stars:</b> {{statistics.stars}}</div>
+          <div><b>Kuvaus:</b> {{book.description}}</div>
+          <div><b>Genret:</b></div>
+    
+          {%for genre in genres %}
+            <div>
+              <p>{{ genre.name }}</p>
+            </div>
+          {% endfor %}
+        </div>
+    
+        <div class="col-4">
+          {% if book.cover %}
+          <img src="{{ book.cover }}" alt="{{ book.name }}" width="400" height="500">
+          {% else %}
+          <img src="../static/not_found.jpg" alt="{{ book.name }}" width="400" height="500">
+          {% endif %}
+        </div>
+        {% if session.user_id %}
+          <form action="/book/{{ book.id }}/review/add" method="POST" name="review">
+            <div class = "form-group col-6">
+              <label for="stars">stars</label>
+              <input id="stars1" type="radio" name="stars" value=1>
+              <label for="stars1">1</label>
+              <input id="stars2" type="radio" name="stars" value=2>
+              <label for="stars2">2</label>
+              <input id="stars3" type="radio" name="stars" value=3>
+              <label for="stars3">3</label>
+              <input id="stars4" type="radio" name="stars" value=4>
+              <label for="stars4">4</label>
+              <input id="stars5" type="radio" name="stars" value=5 checked>
+              <label for="stars5">5</label>
+            </div>
+            <div class = "form-group col-6">
+              <label for="review">Review</label>
+              <textarea id="review" name="review" rows="3" cols="50" ></textarea>
+            </div>
+            <div class = "form-group col-6">
+              <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+              <button type="submit" class="btn btn-primary">Lähetä</button>
+            </div>
+          </form>
+        {% else %}
+              Kirjaudu tai registeröidy kommentaaksen kirjan 
         {% endif %}
+          <div class="col-6">
+            <div class="container">
+              <div class="row" id="review">
+                <div class="col-12">
+                  <p>arvosteluja: {{statistics.reviews}} kappaletta</p>
+                </div>
+                {% if reviews %}
+                  {% for review in reviews %}
+                    <div class="col-4">
+                      <p><b>From: {{ review.username }}</b></p>
+                      <p>review: {{ review.review }}</p>
+                    </div>
+                    <div class="form-group col-8">
+                      {% if session.admin == 1 or session.user_id == review.user_id %}
+                        <form action="/book/{{ book.id }}/review/delete" method="POST">
+                          <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+                          <button type="submit" name="delete" value="{{ review.id }}">✘</button>
+                        </form>
+                      {% endif %}
+                      <form action="/book/{{ book.id }}/review/like" method="POST">
+                        <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+                        {% if review.id in session.favourite_reviews %}
+                            <button type="submit" name="unfavourite" value="{{ review.id }}">♥</button>
+                            {% else %}
+                            <button type="submit" name="favourite" value="{{ review.id }}">♡</button>
+                        {% endif %}
+                      </form>
+                    </div>                
+
+                  {% endfor %}
+    
+                {% else %}
+                  <p>Ei vielä ole arvosteluja</p>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+          
+      </div>
+    </div>
     {% endif %}
 {% endblock %}
