@@ -42,10 +42,18 @@ class BookService:
   def get_searched_books(self, query, option):
     if option==None or query==None:
       return self.get_visible_books()
-    print(query, option)
     if option=='name':
       return self._book_repository.get_searched_books_title(query)
     if option=='author':
       return self._book_repository.get_searched_books_author(query)
+  
+  def get_books_by_genre(self, genre):
+    if genre == None:
+      raise UserInputError("ei ole sellaista genreä")
+    if genre==0:
+      if session['user_id'] == None:
+        return []
+      return self._book_repository.get_favourites(user_id=session['user_id'])
+    return self._book_repository.get_books_of_genre(int(genre))
 
 book_service = BookService()

@@ -22,7 +22,6 @@ class BookRepository:
     cursor = self.connection.session
     sql = """SELECT id, name, author, description, genres, visible, cover FROM books WHERE visible=1 """
     rows = cursor.execute(sql).fetchall()
-    print(rows)
     return list(map(get_book_by_row, rows))
 
   def get_searched_books_title(self, query):
@@ -65,6 +64,29 @@ class BookRepository:
     except:
         return False
     return True
+  def get_books_of_genre(self, genre_id):
+    """Palauttaa kirjojen nimeistä haetut tulokset"""
 
+    cursor = self.connection.session
+    try:
+        sql = """SELECT id, name, author, description, genres, visible, cover FROM books WHERE :genre IN book.genres AND visible=1 """
+        rows = cursor.execute(sql, {'genre':genre_id}).fetchall()
+        print(rows)
+        return list(map(get_book_by_row, rows))
+    except:
+        return []
+
+  def get_favourites(self, user_id):
+    """Palauttaa kirjojen nimeistä haetut tulokset"""
+    cursor = self.connection.session
+    try:
+        sql = """SELECT unnest(favourite_books) from users WHERE id=:user_id"""
+        row = cursor.execute(sql, {'user_id':user_id}).fetchone()
+        sql1 = """SELECT id, name, author, description, genres, visible, cover FROM books WHERE id IN :row AND visible=1 """
+        rows = cursor.execute(sql1, {'row':row}).fetchall()
+        print(rows)
+        return list(map(get_book_by_row, rows))
+    except:
+        return []
 
 book_repository = BookRepository(database_connection)

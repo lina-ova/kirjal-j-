@@ -32,7 +32,7 @@ Admin käyttäjillä on myös nappi kirjan poistamiseen.
 
 Kirjan omalla sivulla löytyy kansikuva, kirjan tarkemmat tiedot, kuten nimi, kirjailija, genret ja tähdet, joka on keskiarvo käyttäjien antamistä tehdistä. 
 Sivulla näkyy myös muiden käyttäjien antamat arvostelut. 
-Käyttäjä voi poistaa itse antamat arvostelut. Admin käyttäjä voi poistaa minkä tahansa arvostelun
+Käyttäjä voi poistaa itse antamat arvostelut. Admin käyttäjä voi poistaa minkä tahansa arvostelun.
 kirjautuneille käyttäjile näkyy kirjan arvostelunanto teksikenttä ja tähti valikko. Käyttäjä voi antaa kirjalle 1-5 tähtiä. 
 
 
