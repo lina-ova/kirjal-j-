@@ -67,8 +67,10 @@ Kirjaläjä
                 <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
                 <button type="submit" name="unfavourite" value="{{ book.id }}">♥</button>
                 {% else %}
-                <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
-                <button type="submit" name="favourite" value="{{ book.id }}">♡</button>
+                  {% if session.user_id %}
+                  <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+                  <button type="submit" name="favourite" value="{{ book.id }}">♡</button>
+                  {% endif %}
                 {% endif %}
               </form>
             </div>
