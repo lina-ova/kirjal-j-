@@ -1,4 +1,4 @@
-from flask import render_template, request, flash, redirect, url_for, session
+from flask import render_template, request, flash, redirect, url_for
 from app import app
 from services.book_service import book_service
 from services.user_service import user_service
@@ -76,8 +76,9 @@ def render_book(book_id):
 @app.route("/type/<int:genre_id>/<string:genre_name>", methods=["GET"])
 def render_type_books(genre_id, genre_name):
     try: 
+      genres = genre_service.get_genres()
       books = book_service.get_books_by_genre(genre_id)
-      return render_template("books_by_genre.html", books=books, genre=genre_name)
+      return render_template("books_by_genre.html", books=books, genre=genre_name, genres=genres)
     except Exception as error:
       flash(str(error))
       return redirect_to_index()

@@ -26,6 +26,9 @@ Kirjaläjä
             </select>
             <input type="text" name="search" id="search" placeholder="Nimi, tekijä...">
           <button type="submit" class="btn btn-primary">etsi</button>
+
+
+
         </form>
     </div>
   </div>
@@ -39,13 +42,13 @@ Kirjaläjä
               <div class="navbar-nav">
                 {% for genre in genres %}
                   <div class="nav-item">
-                    <a class="nav-link" href="type/{{ genre.id }}/{{ genre.name }}">{{genre.name}}</a>
+                    <a class="nav-link" href="/type/{{ genre.id }}/{{ genre.name }}">{{genre.name}}</a>
                   </div>
                 {% endfor %}
 
                 {% if session.user_id %}
                   <div class="nav-item">
-                    <a class="nav-link" href="type/0/favourites">favourites</a>
+                    <a class="nav-link" href="/type/0/favourites">favourites</a>
                   </div>
                 {% endif %}
                 </div>
@@ -53,6 +56,7 @@ Kirjaläjä
     </div>
   </div>
 </div>
+
 <div class="container">
   <div class="row">
     {% if books %}

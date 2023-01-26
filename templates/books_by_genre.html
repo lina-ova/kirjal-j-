@@ -19,18 +19,31 @@ Kirjaläjä
         </ul>
       {% endif %}
       {% endwith %}
-        <form action="/search" method="GET">
-            <select name="search_option" id="option">
-              <option value="name" selected>kirjan nimi</option>
-              <option value="author">kirjailija</option>
-            </select>
-            <input type="text" name="search" id="search" placeholder="Nimi, tekijä...">
-          <button type="submit" class="btn btn-primary">etsi</button>
-        </form>
     </div>
   </div>
 </div>
+<div class="container">
+  <div class="row">
+    <div class="col-12">
 
+          <nav class="navbar navbar-expand-lg navbar-light">
+              <div class="navbar-nav">
+                {% for genre in genres %}
+                  <div class="nav-item">
+                    <a class="nav-link" href="/type/{{ genre.id }}/{{ genre.name }}">{{genre.name}}</a>
+                  </div>
+                {% endfor %}
+
+                {% if session.user_id %}
+                  <div class="nav-item">
+                    <a class="nav-link" href="/type/0/favourites">favourites</a>
+                  </div>
+                {% endif %}
+                </div>
+          </nav>
+    </div>
+  </div>
+</div>
 <div class="container">
   <div class="row">
     <div class="col-12"><h4>{{ genre }}</h4></div>
