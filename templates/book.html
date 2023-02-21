@@ -78,7 +78,8 @@
                   {% for review in reviews %}
                     <div class="col-4">
                       <p><b>From: {{ review.username }}</b></p>
-                      <p>review: {{ review.review }}</p>
+                      <p>at: {{ review.time.strftime("%Y-%m-%d %H:%M:%S") }}</p>
+                      <p><b>review</b>: {{ review.review }}</p>
                     </div>
                     <div class="form-group col-8">
                       {% if session.admin == 1 or session.user_id == review.user_id %}

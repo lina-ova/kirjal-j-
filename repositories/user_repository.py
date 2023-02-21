@@ -9,7 +9,7 @@ class UserRepository:
     cursor = self.connection.session
     hash_value = generate_password_hash(password)
 
-    sql = "INSERT INTO users (username, password, admin) VALUES (:username, :password, 1)"
+    sql = "INSERT INTO users (username, password, admin) VALUES (:username, :password, 0)"
     try:
         cursor.execute(sql, {"username": username, "password": hash_value})
         cursor.commit()
