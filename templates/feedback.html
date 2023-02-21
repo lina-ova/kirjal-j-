@@ -26,6 +26,7 @@ palaute
         <div class="text-center">
             <textarea id="feedback" name="feedback" rows="3" cols="30" required></textarea>
         </div>
+        <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
 
         <button type='submit' class="btn btn-primary">
             Anna palaute

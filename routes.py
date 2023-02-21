@@ -131,6 +131,7 @@ def add_new_genre():
   csrf_token=request.form.get('csrf_token')
   try:
     genre_service.add_genre(name, csrf_token)
+    flash(str("lisätty genre: ", name))
     return redirect_to_add_book()
   except Exception as error:
     flash(str(error))
@@ -184,6 +185,7 @@ def give_feedback():
     feedback = request.form.get("feedback")
     csrf_token=request.form.get('csrf_token')
     feedback_service.add_feedback(feedback, csrf_token)
+    flash(str("Kiitos palautteesta!"))
     return redirect_to_index()
   except Exception as error:
     flash(str(error))
