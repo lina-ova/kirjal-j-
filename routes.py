@@ -73,12 +73,12 @@ def render_book(book_id):
       flash(str(error))
       return redirect_to_index()
 
-@app.route("/type/<int:genre_id>/<string:genre_name>", methods=["GET"])
-def render_type_books(genre_id, genre_name):
+@app.route("/type/<int:genre_id>/", methods=["GET"])
+def render_type_books(genre_id):
     try: 
       genres = genre_service.get_genres()
       books = book_service.get_books_by_genre(genre_id)
-      return render_template("books_by_genre.html", books=books, genre=genre_name, genres=genres)
+      return render_template("books_by_genre.html", books=books, genre=genre_id, genres=genres)
     except Exception as error:
       flash(str(error))
       return redirect_to_index()

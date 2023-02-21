@@ -1,4 +1,5 @@
 from database import database_connection
+from werkzeug.security import check_password_hash, generate_password_hash
 
 class UserRepository:
   def __init__(self, connection):
@@ -6,9 +7,11 @@ class UserRepository:
 
   def add_user(self, username, password):
     cursor = self.connection.session
+    hash_value = generate_password_hash(password)
+
     sql = "INSERT INTO users (username, password, admin) VALUES (:username, :password, 1)"
     try:
-        cursor.execute(sql, {"username": username, "password": password})
+        cursor.execute(sql, {"username": username, "password": hash_value})
         cursor.commit()
     except:
         return False
@@ -25,12 +28,16 @@ class UserRepository:
 
   def check_password(self, username, password):
     cursor=self.connection.session
-    sql = "SELECT password FROM users WHERE username=:username and password=:password"
-    result = cursor.execute(sql, {"username":username, "password":password})
-    password = result.fetchone()
-    if password is None:
+    sql = "SELECT password FROM users WHERE username=:username"
+    result = cursor.execute(sql, {"username":username}).fetchone()
+    if not result:
         return False
-    return True
+    hash_value = result.password
+    if check_password_hash(hash_value, password):
+        return True
+    else:
+        return False
+         
 
   def get_info(self, username):
     cursor=self.connection.session

@@ -81,7 +81,6 @@ class UserService:
     del session["admin"]
     del session["favourite_books"]
     del session["favourite_reviews"]
- 
     del session["csrf_token"] 
 
 user_service = UserService()

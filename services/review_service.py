@@ -6,7 +6,7 @@ class ReviewService:
     self._review_repository = review_repository
 
   def add_review(self, book_id, stars,review, scrf_token):
-    if stars == None:
+    if stars == None or len(review)<2:
         raise Exception("kerro mielipiteesi kirjasta")
     if book_id == None:
         raise Exception("jotain meni väärin")
