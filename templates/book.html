@@ -89,11 +89,13 @@
                       {% endif %}
                       <form action="/book/{{ book.id }}/review/like" method="POST">
                         <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
-                        {% if review.id in session.favourite_reviews %}
-                            <button type="submit" name="unfavourite" value="{{ review.id }}">♥</button>
-                            {% else %}
-                            <button type="submit" name="favourite" value="{{ review.id }}">♡</button>
-                        {% endif %}
+                        {%if session.user_id%}
+                          {% if review.id in session.favourite_reviews %}
+                              <button type="submit" name="unfavourite" value="{{ review.id }}">♥</button>
+                              {% else %}
+                              <button type="submit" name="favourite" value="{{ review.id }}">♡</button>
+                          {% endif %}
+                        {% endif%}
                       </form>
                     </div>                
 
