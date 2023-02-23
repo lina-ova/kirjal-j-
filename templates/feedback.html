@@ -21,7 +21,7 @@ palaute
           {% endif %}
         {% endwith %}
       </div>
-      <form action="/feedback" method="POST">
+      <form action="/feedback/add" method="POST">
         
         <div class="text-center">
             <textarea id="feedback" name="feedback" rows="3" cols="30" required></textarea>
@@ -35,6 +35,32 @@ palaute
     </div>
   </div>
 </div>
+{% for feedback in feedbacks %}
+<div class="container">
+  <div class="text-center">
+    <div>
+      <b>From:</b> {{ feedback.username }}
+        {% if session.admin == 1%}
+        <div class="btn-group">
 
+          <form action="/feedback/delete" method="POST">
+            <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+            <button type="submit" name="delete" value="{{ feedback.id }}">✘</button>
+          </form>
+        </div>
+        
+      {% endif %}      
+      
+    </div>
+
+    <p>at: {{ feedback.time.strftime("%Y-%m-%d %H:%M:%S") }}</p>
+    <p><b>feedback</b>: {{ feedback.feedback }}</p>
+  </div>
+    
+
+
+</div>
+  
+{% endfor %}
 
 {% endblock %}

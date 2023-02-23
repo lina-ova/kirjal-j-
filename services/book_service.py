@@ -21,7 +21,7 @@ class BookService:
     if cover:
       if not cover.endswith(".jpg"):
         raise UserInputError("anna jpg tiedoston osoite")
-    if session["csrf_token"] != csrf_token:
+    if session["csrf_token"] != csrf_token or session['admin']!=1:
       abort(403)
     self._book_repository.add_book(name, author, description, genres, cover)
   
@@ -35,7 +35,7 @@ class BookService:
     return self._book_repository.get_books()
 
   def delete_book(self, book_id, csrf_token):
-    if session["csrf_token"] != csrf_token:
+    if session["csrf_token"] != csrf_token or session['admin']!=1:
       abort(403)
     return self._book_repository.hide_book(book_id)
 

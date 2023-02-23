@@ -176,10 +176,11 @@ def try_login():
 
 @app.route("/feedback", methods=["GET"])
 def render_feedback():
-  return render_template("feedback.html")
+  feedbacks = feedback_service.get_visible_feedback()
+  return render_template("feedback.html", feedbacks=feedbacks)
 
 
-@app.route("/feedback", methods=["POST"])
+@app.route("/feedback/add", methods=["POST"])
 def give_feedback():
   try:
     feedback = request.form.get("feedback")
@@ -190,7 +191,18 @@ def give_feedback():
   except Exception as error:
     flash(str(error))
     return redirect_to_feedback()
- 
+
+@app.route("/feedback/delete", methods=["POST"])
+def delete_feedback():
+  try:
+    feedback_id = request.form.get("delete")
+    csrf_token=request.form.get('csrf_token')
+    feedback_service.delete_feedback(feedback_id, csrf_token)
+    flash(str("poisto onnistui!"))
+    return redirect_to_feedback()
+  except Exception as error:
+    flash(str(error))
+    return redirect_to_feedback() 
 
 @app.route("/logout")
 def logout():
